@@ -97,7 +97,7 @@
             })
         },
         mounted () {
-
+          console.log('xxx')
         }
     }
 </script>
