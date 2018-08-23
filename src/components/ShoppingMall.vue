@@ -53,7 +53,6 @@
             </swiper>
           </div>
         </div>
-</div>
     </div>
 </template>
 
