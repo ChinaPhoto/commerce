@@ -95,9 +95,6 @@
             }).catch((err) =>{
               console.log(err)
             })
-        },
-        mounted () {
-          console.log('xxx')
         }
     }
 </script>
