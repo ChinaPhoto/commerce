@@ -95,6 +95,9 @@
             }).catch((err) =>{
               console.log(err)
             })
+        },
+        mounted() {
+          console.log('你是猪嘛')
         }
     }
 </script>
