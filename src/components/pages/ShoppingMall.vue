@@ -53,6 +53,8 @@
             </swiper>
           </div>
         </div>
+        <swiperDefault></swiperDefault> 
+        <swiperDefaultTwo></swiperDefaultTwo>
     </div>
 </template>
 
@@ -60,7 +62,8 @@
 // import axios from 'axios'
  import 'swiper/dist/css/swiper.css'
  import { swiper, swiperSlide } from 'vue-awesome-swiper'
-
+ import swiperDefault from '../swiper/swiperDefault.vue'
+ import swiperDefaultTwo from '../swiper/swiperDefault1.vue'
     export default {
         data(){
             return{
@@ -79,7 +82,9 @@
         },
         components:{
           swiper,
-          swiperSlide
+          swiperSlide,
+          swiperDefault,
+          swiperDefaultTwo
         },
         created () {
           this.$ajax.get('https://www.easy-mock.com/mock/5b7c271360600b6d828b4dfe/smlievue/index').then((res) =>{
