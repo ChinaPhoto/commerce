@@ -47,48 +47,47 @@
                 <div class="recommend-item">
                   <img v-lazy="item.image" width="80%">
                   <div> {{item.goodsName}} </div>
-                  <div> ￥{{item.price}} (￥{{item.mallPrice}}) </div>
+                  <div> ￥{{item.price | moneyFilter}} (￥{{item.mallPrice | moneyFilter}}) </div>
                 </div>
               </swiper-slide>
             </swiper>
           </div>
         </div>
-        <!-- <swiperDefault></swiperDefault>
-        <swiperDefaultTwo></swiperDefaultTwo>
-        <swiperText></swiperText> -->
-        <div class="floor">
-            <div class="recommend-title">
-              楼城设置
-            </div>
-            <div class="floor-anomaly">
-                <div class="floor-one">
-                    <img  v-lazy="floor1_0.image"  width="100%">
-                </div>
-                <div>
-                    <div class="floor-two">
-                        <img  v-lazy="floor1_1.image"  width="100%">
-                    </div>
-                    <div>
-                        <img  v-lazy="floor1_2.image"  width="100%">
-                    </div>
-                </div>
-            </div>
-            <div class="floor-rule">
-                <div v-for="(item,index) in floor1.slice(3)" :v-for="index">
-                    <img v-lazy="item.image" alt="" width="100%">
-                </div>
-            </div>
+
+        <div v-if="floor1.data.length > 0">
+            <floorComponent :floorData = "floor1"></floorComponent>
         </div>
+        <div v-if="floor2.data.length > 0">
+            <floorComponent :floorData = "floor2"></floorComponent>
+        </div>
+         <div v-if="floor3.data.length > 0">
+            <floorComponent :floorData = "floor3"></floorComponent>
+        </div>
+        <div class="hot-area">
+            <div class="hot-title">热卖商品</div>
+            <div class="hot-goods" v-if="hotGoods.length > 0">
+            <!--这里需要一个list组件-->
+            <van-list>
+                <van-row>
+                      <van-col span="12" v-for="(item,index) in hotGoods" :key="index">
+                          <goodsInfoComponent :goodsData ='item'></goodsInfoComponent>
+                      </van-col>
+                </van-row>
+            </van-list>
+        </div>
+</div>
     </div>
 </template>
 
 <script>
-// import axios from 'axios'
- import 'swiper/dist/css/swiper.css'
- import { swiper, swiperSlide } from 'vue-awesome-swiper'
- import swiperDefault from '../swiper/swiperDefault.vue'
- import swiperDefaultTwo from '../swiper/swiperDefault1.vue'
- import swiperText from '../swiper/swiperText.vue'
+
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  import floorComponent from '../component/floorComponent.vue'
+  import goodsInfoComponent from '../component/goodsInfoComponent.vue'
+  import { toMoney } from '@/filter/moneyFilter.js'
+
+
     export default {
         data(){
             return{
@@ -103,41 +102,51 @@
               category:[],
               advertesPicture:'',
               recommend:[],
-              floor1:[],
-              floor1_0:{},
-              floor1_1:{},
-              floor1_2:{},
-
+              floor1:{
+                data:[],
+                floorTitle:'我是一楼'
+              },
+              floor2:{
+                data:[],
+                floorTitle:'我是二楼'
+              },
+              floor3:{
+                 data:[],
+                floorTitle:'我是三楼'
+              },
+              hotGoods:[]
             }
         },
         components:{
           swiper,
           swiperSlide,
-          swiperDefault,
-          swiperDefaultTwo,
-          swiperText
+          floorComponent,
+          goodsInfoComponent
         },
         created () {
           this.$ajax.get('https://www.easy-mock.com/mock/5b7c271360600b6d828b4dfe/smlievue/index').then((res) =>{
               if(res.status == 200){
-                console.log(res)
-                this.category=res.data.data.category;
-                this.swipeData.bannerPicArray = res.data.data.slides;
-                this.advertesPicture = res.data.data.advertesPicture.PICTURE_ADDRESS;
-                this.recommend = res.data.data.recommend;
-                this.floor1 = res.data.data.floor1;
-                this.floor1_0 =this.floor1[0]
-                this.floor1_1 =this.floor1[1];
-                this.floor1_2 =this.floor1[2];
-
+                  console.log(res)
+                  this.category=res.data.data.category;
+                  this.swipeData.bannerPicArray = res.data.data.slides;
+                  this.advertesPicture = res.data.data.advertesPicture.PICTURE_ADDRESS;
+                  this.recommend = res.data.data.recommend;
+                  this.floor1.data = res.data.data.floor1;
+                  this.floor2.data = res.data.data.floor2;
+                  this.floor3.data = res.data.data.floor3;
+                  this.hotGoods = res.data.data.hotGoods;
               }
-
             }).catch((err) =>{
-              console.log(err)
+                console.log(err)
             })
         },
         mounted() {
-          console.log('你是猪嘛')
+            console.log('你是猪嘛')
+        },
+        filters :{
+          moneyFilter(money){
+            return toMoney(money);
+          }
         }
     }
 </script>
@@ -203,39 +212,10 @@
       font-size: 12px;
       text-align: center;
   }
-  .floor-anomaly{
-      display: flex;
-      flex-direction:row;
-      background-color: #fff;
-      border-bottom:1px solid #ddd;
+  .hot-area{
+        text-align: center;
+        font-size:14px;
+        height: 1.8rem;
+        line-height:1.8rem;
   }
-  .floor-anomaly div{
-      width:10rem;
-      box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-  }
-  .floor-one{
-      border-right:1px solid #ddd;
-
-  }
-  .floor-two{
-      border-bottom:1px solid #ddd;
-  }
-.floor-rule{
-      display: flex;
-      flex-direction: row;
-      flex-wrap:wrap;
-      background-color: #fff;
-
-  }
-  .floor-rule div{
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      width:10rem;
-      border-bottom:1px solid #ddd;
-  }
-  .floor-rule div:nth-child(odd){
-      border-right: 1px solid #ddd;
-  }
-
 </style>

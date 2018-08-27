@@ -5,11 +5,9 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 
-import { Button, Row, Col, Swipe, SwipeItem, Lazyload } from "vant"
+import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List } from "vant"
 
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload, {
-    // loading: 'assets/imgages/imageLoading.jpg'
-})
+Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
 
 Vue.config.productionTip = false
 
