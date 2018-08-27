@@ -2,7 +2,7 @@
     <div>
         <swiper :options="swiperOption" class="swiper">
              <swiper-slide class="swiper-slide" v-for="(item, index) in slide" :key="index">
-                Slide {{item}} 
+                Slide {{item}}
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -12,7 +12,7 @@
 <script>
     import 'swiper/dist/css/swiper.css'
     import { swiper, swiperSlide } from 'vue-awesome-swiper'
-   
+
     export default {
         data() {
             return {
@@ -22,8 +22,8 @@
                     pagination:{
                         el:'.swiper-pagination'
                     }
-                }   
-            }    
+                }
+            }
         },
         components:{ swiper, swiperSlide }
     }

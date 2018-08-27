@@ -53,8 +53,32 @@
             </swiper>
           </div>
         </div>
-        <swiperDefault></swiperDefault> 
+        <!-- <swiperDefault></swiperDefault>
         <swiperDefaultTwo></swiperDefaultTwo>
+        <swiperText></swiperText> -->
+        <div class="floor">
+            <div class="recommend-title">
+              楼城设置
+            </div>
+            <div class="floor-anomaly">
+                <div class="floor-one">
+                    <img  v-lazy="floor1_0.image"  width="100%">
+                </div>
+                <div>
+                    <div class="floor-two">
+                        <img  v-lazy="floor1_1.image"  width="100%">
+                    </div>
+                    <div>
+                        <img  v-lazy="floor1_2.image"  width="100%">
+                    </div>
+                </div>
+            </div>
+            <div class="floor-rule">
+                <div v-for="(item,index) in floor1.slice(3)" :v-for="index">
+                    <img v-lazy="item.image" alt="" width="100%">
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -64,6 +88,7 @@
  import { swiper, swiperSlide } from 'vue-awesome-swiper'
  import swiperDefault from '../swiper/swiperDefault.vue'
  import swiperDefaultTwo from '../swiper/swiperDefault1.vue'
+ import swiperText from '../swiper/swiperText.vue'
     export default {
         data(){
             return{
@@ -77,14 +102,20 @@
               },
               category:[],
               advertesPicture:'',
-              recommend:[]
+              recommend:[],
+              floor1:[],
+              floor1_0:{},
+              floor1_1:{},
+              floor1_2:{},
+
             }
         },
         components:{
           swiper,
           swiperSlide,
           swiperDefault,
-          swiperDefaultTwo
+          swiperDefaultTwo,
+          swiperText
         },
         created () {
           this.$ajax.get('https://www.easy-mock.com/mock/5b7c271360600b6d828b4dfe/smlievue/index').then((res) =>{
@@ -94,6 +125,11 @@
                 this.swipeData.bannerPicArray = res.data.data.slides;
                 this.advertesPicture = res.data.data.advertesPicture.PICTURE_ADDRESS;
                 this.recommend = res.data.data.recommend;
+                this.floor1 = res.data.data.floor1;
+                this.floor1_0 =this.floor1[0]
+                this.floor1_1 =this.floor1[1];
+                this.floor1_2 =this.floor1[2];
+
               }
 
             }).catch((err) =>{
@@ -158,7 +194,7 @@
       color:#e5017d;
   }
   .recommend-body{
-       border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #eee;
    }
 
   .recommend-item{
@@ -166,6 +202,40 @@
       border-right: 1px solid #eee;
       font-size: 12px;
       text-align: center;
+  }
+  .floor-anomaly{
+      display: flex;
+      flex-direction:row;
+      background-color: #fff;
+      border-bottom:1px solid #ddd;
+  }
+  .floor-anomaly div{
+      width:10rem;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+  }
+  .floor-one{
+      border-right:1px solid #ddd;
+
+  }
+  .floor-two{
+      border-bottom:1px solid #ddd;
+  }
+.floor-rule{
+      display: flex;
+      flex-direction: row;
+      flex-wrap:wrap;
+      background-color: #fff;
+
+  }
+  .floor-rule div{
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width:10rem;
+      border-bottom:1px solid #ddd;
+  }
+  .floor-rule div:nth-child(odd){
+      border-right: 1px solid #ddd;
   }
 
 </style>
