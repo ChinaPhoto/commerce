@@ -85,8 +85,12 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import floorComponent from '../component/floorComponent.vue'
   import goodsInfoComponent from '../component/goodsInfoComponent.vue'
-  import { toMoney } from '@/filter/moneyFilter.js'
+  import {toMoney} from '@/filter/moneyFilter.js'
+  import url from '@/serviceAPI.conf.js'
 
+  import('../swiper/swiperDefault1.vue').then((res) =>{
+    console.log(res)
+  })
 
     export default {
         data(){
@@ -124,7 +128,7 @@
           goodsInfoComponent
         },
         created () {
-          this.$ajax.get('https://www.easy-mock.com/mock/5b7c271360600b6d828b4dfe/smlievue/index').then((res) =>{
+          this.$ajax.get(url.getShoppingMallInfo).then((res) =>{
               if(res.status == 200){
                   console.log(res)
                   this.category=res.data.data.category;
