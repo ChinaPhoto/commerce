@@ -5,9 +5,19 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 
-import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List } from "vant"
+import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List, Cell, CellGroup, Field, NavBar } from "vant"
 
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
+Vue.use(Button)
+    .use(Row)
+    .use(Col)
+    .use(Swipe)
+    .use(SwipeItem)
+    .use(Lazyload)
+    .use(List)
+    .use(Cell)
+    .use(CellGroup)
+    .use(Field)
+    .use(NavBar)
 
 Vue.config.productionTip = false
 
