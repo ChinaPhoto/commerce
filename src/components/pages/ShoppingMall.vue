@@ -88,9 +88,9 @@
   import {toMoney} from '@/filter/moneyFilter.js'
   import url from '@/serviceAPI.conf.js'
 
-  import('../swiper/swiperDefault1.vue').then((res) =>{
-    console.log(res)
-  })
+  // import('../swiper/swiperDefault1.vue').then((res) =>{
+  //   console.log(res)
+  // })
 
     export default {
         data(){
