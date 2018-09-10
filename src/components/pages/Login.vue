@@ -52,6 +52,12 @@ import { Toast } from 'vant';
                 }
              }
          },
+         created(){
+            if(localStorage.key){
+                    Toast.success('您已经登录')
+                    this.$router.push('/')
+            }
+        },
          methods:{
             goBack() {
                 this.$router.go(-1);
@@ -109,16 +115,36 @@ import { Toast } from 'vant';
 
             loginEd(){
                 this.openLoading = true;
-                this.$ajax.post(url.loginUer, {
+                this.$ajax.post(url.login, {
                     userName:this.username,
                     password:this.password
 
                 }).then((res) =>{
+                    this.openLoading = false;
+                    new Promise ((resolve,reject) =>{
+                       localStorage.setItem('key',this.username)
+
+
+                       setTimeout(() =>{
+                         resolve()
+                       },500)
+                    }).then(()=>{
+                    console.log(res)
+                    if(res.data.code == 200 && res.data.status){
+                      Toast.fail(res.data.message);
+                      this.$router.push('/')
+                    }else{
+                        Toast.fail(res.data.message);
+                    }
+                    }).catch((err) =>{
+                      console.log(err)
+                    })
 
                 })
                 .catch((error) =>{
-
-
+                    this.openLoading = false;
+                    Toast.fail('登录成功');
+                    console.log(error)
                 })
             }
          }

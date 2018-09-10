@@ -2,8 +2,9 @@ const baseUrl = "https://www.easy-mock.com/mock/5b7c271360600b6d828b4dfe/smlievu
 const LOCALURL = "http://localhost:3000/"
 
 const URL = {
-    getShoppingMallInfo: baseUrl + 'index',
-    loginUer: LOCALURL + 'user/login'
+    getShoppingMallInfo: baseUrl + 'index', //商城首页所有信息
+    loginUer: LOCALURL + 'user/reg', // 用户注册接口
+    login: LOCALURL + 'user/login' //  用户登录接口
 
 }
 
