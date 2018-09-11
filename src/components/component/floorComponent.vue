@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="floor-rule">
-                <div v-for="(item,index) in floorData.data.slice(3)" :v-for="index">
+                <div v-for="(item,index) in floorData.data.slice(3)" :v-for="index" :key="index">
                     <img :src="item.image" alt="" width="100%">
                 </div>
             </div>
