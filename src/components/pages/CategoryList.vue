@@ -51,11 +51,9 @@
               this.getCategorySubByCategoryId(categoryId)
           },
           getCategorySubByCategoryId(categoryId){
-              this.$ajax.get(url.getCategorySubList,{
-                  params:{
-                      categoryId:categoryId
-                  }
-              }).then((res)=>{
+
+              this.$ajax.post(url.getCategorySubList,{categoryId:categoryId }).
+              then((res)=>{
                 console.log(res)
               }).catch((err)=>{
                 console.log(err)
