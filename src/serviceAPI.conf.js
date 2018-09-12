@@ -5,7 +5,9 @@ const URL = {
     getShoppingMallInfo: baseUrl + 'index', //商城首页所有信息
     loginUer: LOCALURL + 'user/reg', // 用户注册接口
     login: LOCALURL + 'user/login', //  用户登录接口
-    getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo' //  用户登录接口
+    getDetailGoodsInfo: LOCALURL + 'goods/getDetailGoodsInfo', //  用户登录接口
+    getCategoryList: LOCALURL + 'goods/getCategoryList', // 大类商品接口
+    getCategorySubList: LOCALURL + 'goods/getCategorySubList' // 大类商品接口
 }
 
 module.exports = URL

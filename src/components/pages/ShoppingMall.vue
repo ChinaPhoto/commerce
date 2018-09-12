@@ -148,9 +148,9 @@
             console.log('你是猪嘛')
         },
         filters :{
-          moneyFilter(money){
-            return toMoney(money);
-          }
+            moneyFilter(money){
+              return toMoney(money);
+            }
         }
     }
 </script>

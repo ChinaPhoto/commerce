@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 
-import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List, Cell, CellGroup, Field, NavBar, Toast } from "vant"
+import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List, Cell, CellGroup, Field, NavBar, Toast, Tab, Tabs } from "vant"
 
 Vue.use(Button)
     .use(Row)
@@ -19,6 +19,8 @@ Vue.use(Button)
     .use(Field)
     .use(NavBar)
     .use(Toast)
+    .use(Tab)
+    .use(Tabs)
 Vue.config.productionTip = false
 
 Vue.prototype.$ajax = axios;
