@@ -14,7 +14,14 @@
                     </ul>
                 </div>
             </van-col>
-            <van-col span="18">右侧列表</van-col>
+            <van-col span="18">
+              <div class="tabCategorySub">
+                  <van-tabs v-model="active">
+                      <van-tab v-for="(item, index) in categorySub" :key="index" :title="item.MALL_SUB_NAME">
+                      </van-tab>
+                  </van-tabs>
+              </div>
+            </van-col>
         </van-row>
       </div>
   </div>
@@ -26,11 +33,14 @@
       data() {
           return {
             category:[],
-            categoryIndex:0
+            categoryIndex:0,
+            categorySub:[],
+            active:0
           }
       },
       created() {
-        this.getCategory()
+        this.getCategory();
+        this.getCategorySubByCategoryId(1)
       },
       methods:{
           getCategory(){
@@ -51,10 +61,15 @@
               this.getCategorySubByCategoryId(categoryId)
           },
           getCategorySubByCategoryId(categoryId){
-
-              this.$ajax.post(url.getCategorySubList,{categoryId:categoryId }).
+              this.$ajax.get(url.getCategorySubList,{
+                  params:{
+                    categoryId:categoryId
+                  }
+               }).
               then((res)=>{
                 console.log(res)
+                  this.categorySub=res.data.data
+                  this.active = 0
               }).catch((err)=>{
                 console.log(err)
               })
