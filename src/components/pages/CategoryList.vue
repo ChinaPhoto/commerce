@@ -21,6 +21,19 @@
                       </van-tab>
                   </van-tabs>
               </div>
+              <div id="list-div">
+                    <van-pull-refresh v-model="isRefresh" @refresh='onRefresh'>
+                          <van-list
+                            v-model="loading"
+                            :finished = 'finished'
+                            @load="onLoad"
+                        >
+                            <div v-for="item in list" :key="item"  class="list-item" >{{item}}</div>
+                        </van-list>
+                    </van-pull-refresh>        
+
+                  
+              </div>
             </van-col>
         </van-row>
       </div>
@@ -31,12 +44,16 @@
    import url from '@/serviceAPI.conf.js';
   export default {
       data() {
-          return {
-            category:[],
-            categoryIndex:0,
-            categorySub:[],
-            active:0
-          }
+            return {
+                category:[],
+                categoryIndex:0,
+                categorySub:[],
+                active:0,
+                list:[],
+                loading:false,  //上拉加载使用
+                finished:false, // 下拉加载是否有错
+                isRefresh:false,
+            }
       },
       created() {
         this.getCategory();
@@ -73,12 +90,41 @@
               }).catch((err)=>{
                 console.log(err)
               })
+          },
+          onLoad(){
+               setTimeout(()=>{
+                    for(let i=0;i<10;i++){
+                        this.list.push(this.list.length+1)
+                    }
+                    this.loading=false;
+                    if (this.list.length >= 40) {
+                        this.finished = true;
+                    }
+                },500)
+          },
+          onRefresh(){
+              setTimeout(()=>{
+                    this.isRefresh = false;
+                    this.finished = false;
+                    this.list=[];
+                    this.onLoad();
+                  
+              },500)
           }
 
       },
       mounted(){
-          let winHeight = document.documentElement.clientHeight
-          document.getElementById("leftNav").style.height= winHeight-46 +'px'
+            let winHeight = document.documentElement.clientHeight
+            document.getElementById("leftNav").style.height= winHeight-46 +'px'
+            document.getElementById('list-div').style.height=winHeight-90 +'px'
+
+            let data = {
+                categorySubId:2,
+                page:1
+            }
+            this.$ajax.post(url.getGoodsListByCategorySubID , data).then((res) =>{
+                console.log(res)
+            })
       }
 
   }
