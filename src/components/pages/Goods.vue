@@ -38,6 +38,7 @@
 <script>
     import url from '@/serviceAPI.conf.js';
     import {toMoney} from "@/filter/moneyFilter.js"
+    import {Toast} from 'vant'
     export default{
         data (){
             return {
@@ -71,13 +72,15 @@
             // 增加商品到购物车
             addGoodsToCart(){
                 // 读取 购物车内的商品数据
-                let cartInfo  = localStorage.cattInfo? JSON.parse(localStorage.cattInfo):[];
+                let cartInfo  = localStorage.cartInfo? JSON.parse(localStorage.cartInfo):[];
+
+              
                 // 判断购物车有没有这个商品
-
-                let isHaveGoods = cartInfo.find((cart) =>{
-                  cart.goodsId == this.goodsId
-                })
-
+                let isHaveGoods = cartInfo.find(cart =>
+                    cart.goodsId== this.goodsId
+                )    
+                    //   let isHaveGoods = cartInfo.find(cart=>cart.goodsId== this.goodsId)
+                  console.log(isHaveGoods)           
                 if(!isHaveGoods){
                     // 如果没有就直接添加近购物车
                      let newGoodsInfo={
@@ -89,9 +92,9 @@
                     }
                      cartInfo.push(newGoodsInfo);
                     localStorage.cartInfo = JSON.stringify(cartInfo);
-                    Toast.success('成功文案');
+                    Toast.success('添加成功');
                 }else{
-                    Toast.success('已经此物品')
+                    Toast.success('已有此商品')
                 }
                 this.$router.push({name:'Cart'})  // 进行跳转
             }
