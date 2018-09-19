@@ -130,7 +130,7 @@
         created () {
           this.$ajax.get(url.getShoppingMallInfo).then((res) =>{
               if(res.status == 200){
-                  console.log(res)
+
                   this.category=res.data.data.category;
                   this.swipeData.bannerPicArray = res.data.data.slides;
                   this.advertesPicture = res.data.data.advertesPicture.PICTURE_ADDRESS;
@@ -145,7 +145,7 @@
             })
         },
         mounted() {
-            console.log('你是猪嘛')
+
         },
         filters :{
             moneyFilter(money){
@@ -195,6 +195,7 @@
       padding: .3rem;
       font-size: 12px;
       text-align: center;
+      flex: 1
   }
  .recommend-area{
        background-color: #fff;

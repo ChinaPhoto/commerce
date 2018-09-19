@@ -26,7 +26,7 @@
         </div>
         <div class="goods-bottom">
             <div>
-                <van-button size="large" type="primary">加入购物车</van-button>
+                <van-button size="large" type="primary" @click="addGoodsToCart">加入购物车</van-button>
             </div>
             <div>
                 <van-button size="large" type="danger">直接购买</van-button>
@@ -50,8 +50,9 @@
             this.getInfo()
         },
         methods: {
-           getGoodsId(){  //接收参数id
+            getGoodsId(){  //接收参数id
                 this.goodsId = this.$route.query.goodsId
+                console.log(this.goodsId)
             },
             getInfo(){
                 this.$ajax.post(url.getDetailGoodsInfo,{
@@ -66,6 +67,33 @@
             },
             onClickLeft(){
                 this.$router.go(-1)
+            },
+            // 增加商品到购物车
+            addGoodsToCart(){
+                // 读取 购物车内的商品数据
+                let cartInfo  = localStorage.cattInfo? JSON.parse(localStorage.cattInfo):[];
+                // 判断购物车有没有这个商品
+
+                let isHaveGoods = cartInfo.find((cart) =>{
+                  cart.goodsId == this.goodsId
+                })
+
+                if(!isHaveGoods){
+                    // 如果没有就直接添加近购物车
+                     let newGoodsInfo={
+                        goodsId:this.goodsInfo.ID,
+                        Name:this.goodsInfo.Name,
+                        price:this.goodsInfo.PRESENT_PRICE,
+                        image:this.goodsInfo.IMAGE1,
+                        count:1
+                    }
+                     cartInfo.push(newGoodsInfo);
+                    localStorage.cartInfo = JSON.stringify(cartInfo);
+                    Toast.success('成功文案');
+                }else{
+                    Toast.success('已经此物品')
+                }
+                this.$router.push({name:'Cart'})  // 进行跳转
             }
         },
         filters :{

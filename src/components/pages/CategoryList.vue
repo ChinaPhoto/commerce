@@ -16,8 +16,8 @@
             </van-col>
             <van-col span="18">
               <div class="tabCategorySub">
-                  <van-tabs v-model="active">
-                      <van-tab v-for="(item, index) in categorySub" :key="index" :title="item.MALL_SUB_NAME">
+                  <van-tabs v-model="active" @click="onClickCategorySub">
+                      <van-tab v-for="(item, index) in categorySub" :key="index" :title="item.MALL_SUB_NAME" >
                       </van-tab>
                   </van-tabs>
               </div>
@@ -28,17 +28,15 @@
                             :finished = 'finished'
                             @load="onLoad"
                         >
-                             <div class="list-item" v-for="(item,index) in goodList" :key="index">
-                                <div class="list-item-img"><img :src="item.IMAGE1" width="100%"/></div>
+                             <div class="list-item" v-for="(item,index) in goodList" :key="index" @click="goGoodsInfo(item.ID)">
+                                <div class="list-item-img"><img :src="item.IMAGE1" width="100%" :onerror ='errorImg'></div>
                                 <div class="list-item-text">
                                     <div>{{item.NAME}}</div>
-                                    <div class="">￥{{item.ORI_PRICE}}</div>
+                                    <div class="">￥{{item.ORI_PRICE | moneyFilter}}</div>
                                 </div>
                             </div>
                         </van-list>
-                    </van-pull-refresh>        
-
-                  
+                    </van-pull-refresh>
               </div>
             </van-col>
         </van-row>
@@ -47,7 +45,8 @@
 </template>
 
 <script>
-   import url from '@/serviceAPI.conf.js';
+    import url from '@/serviceAPI.conf.js';
+    import {toMoney} from '@/filter/moneyFilter.js'
   export default {
       data() {
             return {
@@ -55,13 +54,14 @@
                 categoryIndex:0,
                 categorySub:[],
                 active:0,
-                list:[],
+
                 loading:false,  //上拉加载使用
                 finished:false, // 下拉加载是否有错
                 isRefresh:false,
                 page:1,  // 表示现在传递的第几页
                 goodList:[],  //接受现在传递的参数,
-                categorySubId:''    // 获取子类的id
+                categorySubId:'' ,   // 获取子类的id
+                errorImg:'this.src= "'+ require('@/assets/images/imageLoading.jpg')+'"'
 
             }
       },
@@ -71,7 +71,6 @@
       },
       methods:{
             getCategory(){
-
                 this.$ajax.get(url.getCategoryList).then((res)=>{
                     if(res.data.status)  {
                         this.category = res.data.data
@@ -85,7 +84,8 @@
             },
             clickCategory(index,categoryId){
                 this.categoryIndex = index;
-                this.getCategorySubByCategoryId(categoryId)
+                this.init();
+                this.getCategorySubByCategoryId(categoryId);
             },
             getCategorySubByCategoryId(categoryId){
                 this.$ajax.get(url.getCategorySubList,{
@@ -94,26 +94,27 @@
                     }
                 }).
                 then((res)=>{
-                    console.log(res)
                     this.categorySub=res.data.data
                     this.active = 0
+                    this.categorySubId=this.categorySub[0].ID
+                    this.onLoad()
                 }).catch((err)=>{
                     console.log(err)
                 })
             },
             onLoad(){
                 setTimeout(()=>{
-                  this.categorySubId=this.categorySubId?this.categorySubId:this.categorySub[0].ID
+                    this.categorySubId=this.categorySubId?this.categorySubId:this.categorySub[0].ID
                     this.getGoodList()
+
                     },1000)
             },
             onRefresh(){
                 setTimeout(()=>{
                         this.isRefresh = false;
-                        this.finished = false;
-                        this.list=[];
+                        this.init()
                         this.onLoad();
-                    
+
                 },500)
             },
             // 初始化数据
@@ -129,9 +130,9 @@
                     page:this.page
                 }
                 this.$ajax.post(url.getGoodsListByCategorySubID, data).then((res)=>{
-                    if(res.data.code == 200 && res.data.message) {
-                        this.page ++ ;
-                        this.goodList = this.goodList.concat(res.data.message)
+                   if(res.data.status && res.data.data.length) {
+                        this.page++ ;
+                        this.goodList = this.goodList.concat(res.data.data)
                     }else{
                         this.finished = true
                     }
@@ -140,16 +141,33 @@
                     console.log(err)
                 })
 
+            },
+
+            // 子类切换的时候 请求数据
+            onClickCategorySub(index,title){
+                this.categorySubId= this.categorySub[index].ID;
+                this.init();
+                this.onLoad()
+            },
+
+            // 编程式导航跳转 详情页
+
+            goGoodsInfo(id){
+              this.$router.push({name:'Goods',query:{goodsId:id}})
             }
 
-
       },
+      filters :{
+          moneyFilter(money){
+              return toMoney(money);
+          }
+        },
       mounted(){
+
             let winHeight = document.documentElement.clientHeight
             document.getElementById("leftNav").style.height= winHeight-46 +'px'
             document.getElementById('list-div').style.height=winHeight-90 +'px'
 
-         
       }
 
   }
