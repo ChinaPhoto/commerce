@@ -3,10 +3,40 @@
       <div class="navbar-div">
             <van-nav-bar   title="购物车" />
       </div>
+       <div class="card-title">
+          <van-button size="small" type="danger" @click="clearCart" plain>清空购物车</van-button>
+      </div>
+      <div class="cart-list">
+          <div class="pang-row" v-for="(item,index) in cartInfo" :key="index">
+              <div class="pang-img"><img :src="item.image" width="100%" /></div>
+              <div class="pang-text">
+                  <div class="pang-goods-name">{{item.Name}}</div>
+                      <div class="pang-control">
+                      <van-stepper v-model="item.count" />
+                  </div>
+              </div>
+              <div class="pang-goods-price">
+                   <div>
+                      ￥{{item.price |moneyFilter}}
+                  </div>
+                  <div>
+                      x{{item.count}}
+                  </div>
+                  <div class="allPrice">
+                      ￥{{item.price*item.count | moneyFilter}}
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="totalMoeny">
+          商品总价：￥ {{totalMoney | moneyFilter}}
+      </div>
+
   </div>
 </template>
 
 <script>
+ import {toMoney} from '@/filter/moneyFilter.js'
   export default {
     data() {
         return {
@@ -17,7 +47,29 @@
     created () {
       this.getCarInfo()
     },
+    filters:{
+        moneyFilter(money){
+            return toMoney(money)
+        }
+    },
+    computed: {
+        totalMoney(){
+            let allMoney = 0;
+            this.cartInfo.forEach((val,index) =>{
+                allMoney += val.price * val.count
+            })
+
+            localStorage.cartInfo = JSON.stringify(this.cartInfo);
+            return allMoney
+        }
+    },
     methods: {
+
+        // 清空购物车
+        clearCart() {
+            localStorage.removeItem('cartInfo');
+            this.cartInfo = [];
+        },
         //  得到购物车数据
         getCarInfo () {
 
@@ -25,7 +77,6 @@
             if(localStorage.cartInfo){
                 this.cartInfo = JSON.parse(localStorage.cartInfo)
             }
-            console.log('cartInfo:'+JSON.stringify(this.cartInfo));
             this.isEmpt = this.cartInfo.length > 0 ? true:false;
 
         }

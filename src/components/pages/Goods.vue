@@ -74,18 +74,18 @@
                 // 读取 购物车内的商品数据
                 let cartInfo  = localStorage.cartInfo? JSON.parse(localStorage.cartInfo):[];
 
-              
+
                 // 判断购物车有没有这个商品
                 let isHaveGoods = cartInfo.find(cart =>
                     cart.goodsId== this.goodsId
-                )    
+                )
                     //   let isHaveGoods = cartInfo.find(cart=>cart.goodsId== this.goodsId)
-                  console.log(isHaveGoods)           
+                  console.log(isHaveGoods)
                 if(!isHaveGoods){
                     // 如果没有就直接添加近购物车
                      let newGoodsInfo={
                         goodsId:this.goodsInfo.ID,
-                        Name:this.goodsInfo.Name,
+                        Name:this.goodsInfo.NAME,
                         price:this.goodsInfo.PRESENT_PRICE,
                         image:this.goodsInfo.IMAGE1,
                         count:1
